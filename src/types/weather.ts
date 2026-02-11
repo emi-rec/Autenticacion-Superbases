@@ -1,0 +1,12 @@
+export interface WeatherResponse {
+  name: string
+  sys: { country: string }
+  main: { temp: number; humidity: number; temp_max: number; temp_min: number }
+  weather: Array<{ description: string; icon: string }>
+  wind: { speed: number }
+}
+
+export interface WeatherStyle {
+  icon: React.ReactNode
+  gradient: string
+}
