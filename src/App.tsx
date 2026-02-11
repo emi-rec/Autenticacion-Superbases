@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
 import Login from './pages/Login'
-import { PageLoader } from './components'
+import { PageLoader, Toaster } from './components'
 
 const SignUp = lazy(() => import('./pages/SignUp'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
@@ -25,6 +25,7 @@ function App() {
           {/* Redirección por defecto si la ruta no existe */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        <Toaster />
       </Suspense>
     </BrowserRouter>
   )

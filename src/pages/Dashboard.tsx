@@ -1,4 +1,4 @@
-import { useAuth } from '../context/auth'
+import { useAuth } from '@/hooks/useAuth'
 import { supabase } from '../superBase/supabaseClient'
 import { Button, DashboardCard } from '@/components'
 
