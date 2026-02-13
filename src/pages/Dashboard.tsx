@@ -1,72 +1,65 @@
-import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import { useFetch } from '@/hooks/useFetch'
-import { Card, CardContent } from '@/components/ui/card'
-import { useToast } from '@/hooks/use-toast'
-import { WeatherResponse } from '@/types/weather'
+import { useWeatherDashboard } from '@/hooks/useWeatherDashboard'
 import {
   WeatherHeader,
   WeatherContent,
   WeatherLoader,
   WeatherError,
+  WeatherFavorites,
   getWeatherStyle,
 } from '@/components/dashboard'
+import { Card, CardContent } from '@/components/ui/card'
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const { toast } = useToast()
-  const [activeQuery, setActiveQuery] = useState<string | null>(null)
 
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
+  const {
+    weather,
+    loading,
+    error,
+    favorites,
+    handleSearch,
+    toggleFavorite,
+    isFavorite,
+    removeFavoriteById,
+  } = useWeatherDashboard(user)
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) =>
-        setActiveQuery(
-          `lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`,
-        ),
-      () => {
-        setActiveQuery('q=Madrid')
-        toast({
-          title: 'GPS no disponible',
-          description: 'Mostrando Madrid por defecto.',
-        })
-      },
-    )
-  }, [toast])
-
-  const url = activeQuery
-    ? `https://api.openweathermap.org/data/2.5/weather?${activeQuery}&units=metric&appid=${API_KEY}&lang=es`
-    : null
-
-  const { data: weather, loading, error } = useFetch<WeatherResponse>(url)
-
-  const handleSearch = (city: string) => {
-    setActiveQuery(`q=${city}`)
-  }
-
+  // Calculamos el estilo basado en el icono de la API
   const style = weather ? getWeatherStyle(weather.weather[0].icon) : null
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto p-4 space-y-6 max-w-5xl">
+      {/* 1. Cabecera y Buscador */}
       <WeatherHeader
         email={user?.email}
         loading={loading}
         onSearch={handleSearch}
       />
 
+      {/* 2. Lista de Favoritos */}
+      <WeatherFavorites
+        favorites={favorites}
+        onSelect={handleSearch}
+        onRemove={(id: string) => removeFavoriteById(id)}
+      />
+
+      {/* 3. Tarjeta Principal de Clima */}
       <Card
-        className={`overflow-hidden border-none shadow-2xl bg-gradient-to-br ${style?.gradient || 'from-slate-800 to-slate-900'} text-white`}
+        className={`overflow-hidden border-none shadow-2xl transition-all duration-500 bg-gradient-to-br ${style?.gradient || 'from-slate-500 to-slate-700'} text-white`}
       >
         <CardContent className="p-8">
           {loading ? (
             <WeatherLoader />
           ) : error ? (
-            <WeatherError onRetry={() => setActiveQuery('q=Madrid')} />
-          ) : (
-            weather &&
-            style && <WeatherContent weather={weather} style={style} />
-          )}
+            <WeatherError onRetry={() => handleSearch('Madrid')} />
+          ) : weather && style ? (
+            <WeatherContent
+              weather={weather}
+              style={style}
+              isFavorite={isFavorite}
+              onToggleFavorite={toggleFavorite}
+            />
+          ) : null}
         </CardContent>
       </Card>
     </div>
