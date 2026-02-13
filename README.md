@@ -29,9 +29,18 @@ Modal
 ** http://home.openweathermap.org
 ** cta: bataman911
 
-Algo muy útil para aprender a fondo CRUD (Crear, Leer, Actualizar, Borrar) con Supabase.
+# Correcciones
 
+\*\* El sidebar a los 767px desaparece
+
+# Cosas a implementar:
+
+Sidebar
+Modal
+accordion
 API: OMDB (Películas) o RAWG (Videojuegos).
+API NEWS
+API PHOTOS Unsplash
 
 Un pequeño tip para tus pruebas:
 Si usas Gmail, puedes registrarte con tuemail+1@gmail.com, tuemail+2@gmail.com, etc. Supabase los tomará como usuarios distintos, pero todos los correos de confirmación te llegarán a tu misma cuenta de siempre. ¡Es genial para probar el flujo muchas veces!
