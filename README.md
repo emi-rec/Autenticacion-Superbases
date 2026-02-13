@@ -2,6 +2,9 @@
 
 # Shadcn + Tailwind
 
+<img width="1421" height="900" alt="Captura de pantalla 2026-02-13 a la(s) 12 14 32 p  m" src="https://github.com/user-attachments/assets/854eae2e-ce24-4029-82f9-1a43fa3cd8e5" />
+
+
 Sidebar
 Modal
 
